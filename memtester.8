@@ -1,9 +1,9 @@
-.TH memtester "8" "September 2020" "memtester 4" "Maintenance Commands"
+.TH memtester "8" "November 2024" "memtester 4" "Maintenance Commands"
 .SH NAME
 memtester \- stress test to find memory subsystem faults.
 .SH SYNOPSIS
 .B memtester
-[\f -p PHYSADDR\fR [\f -d DEVICE\fR]]
+[\-p \fIPHYSADDR\fR [\-d \fIDEVICE\fR] [\-u]]
 <\fIMEMORY\fR>
 [\fIITERATIONS\fR]
 .SH DESCRIPTION
@@ -11,7 +11,7 @@ memtester \- stress test to find memory subsystem faults.
 .PP
 memtester is an effective userspace tester for stress-testing the memory
 subsystem.  It is very effective at finding intermittent and non-deterministic
-faults.  Note that problems in other hardware areas (overheating CPU, 
+faults.  Note that problems in other hardware areas (overheating CPU,
 out-of-specification power supply, etc.) can cause intermittent memory faults,
 so it is still up to you to determine where the fault lies through normal
 hardware diagnostic procedures; memtester just helps you determine whether
@@ -45,10 +45,10 @@ So choose wisely.
 .PP
 .SH OPTIONS
 .TP
-\f -p PHYSADDR\fR
-tells memtester to test a specific region of memory starting at physical 
+\-p \fIPHYSADDR\fR
+tells memtester to test a specific region of memory starting at physical
 address PHYSADDR (given in hex), by mmap(2)ing a device specified by the
--d option (below, or /dev/mem by default).  This is mostly of use to hardware 
+-d option (below, or /dev/mem by default).  This is mostly of use to hardware
 developers, for testing memory-mapped I/O devices and similar.
 Note that the memory region will be overwritten during testing, so it is not
 safe to specify memory which is allocated for the system or for other
@@ -56,6 +56,15 @@ applications; doing so will cause them to crash.  If you absolutely must test
 a particular region of actual physical memory, arrange to have that memory
 allocated by your test software, and hold it in this allocated state, then
 run memtester on it with this option.
+.TP
+\-d \fIDEVICE\fR
+specifies the device to open with the -p option above.  If not supplied,
+/dev/mem is the default.
+.TP
+\-u\fR
+causes memtester to open the device specified by the -d option above without the
+O_SYNC flag, which causes the system to use uncached memory semantics on some
+systems.
 .TP
 \fIMEMORY\fR
 the amount of memory to allocate and test, in megabytes by default.  You can
@@ -68,11 +77,11 @@ gigabytes respectively.
 .PP
 If the environment variable MEMTESTER_TEST_MASK is set, memtester treats the
 value as a bitmask of which tests (other than the stuck address test) to run.
-The value can be specified in decimal, in octal (with a leading 0), or in 
-hexadecimal (with a leading 0x).  The specific bit values corresponding to 
+The value can be specified in decimal, in octal (with a leading 0), or in
+hexadecimal (with a leading 0x).  The specific bit values corresponding to
 particular tests may change from release to release; consult the list of tests
 in the source for the appropriate index values for the version of memtester you
-are running.  Note that skipping some tests will reduce the time it takes for 
+are running.  Note that skipping some tests will reduce the time it takes for
 memtester to run, but also reduce memtester's effectiveness.
 .SH NOTE
 .PP
@@ -97,7 +106,7 @@ Written by Charles Cazabon.
 Report bugs to <charlesc-memtester-bugs@pyropus.ca>.
 .PP
 .SH COPYRIGHT
-Copyright \(co 2001-2020 Charles Cazabon
+Copyright \(co 2001-2024 Charles Cazabon
 .br
 This is free software; see the file COPYING for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.

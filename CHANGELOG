@@ -1,3 +1,18 @@
+Version 4.7.1
+16 December 2024
+  -fix compile error with stricter C23/gcc-15 due to incompatible type declaration.
+  Thanks: Rudi Heitbaum.
+
+Version 4.7.0
+28 November 2024
+  -fix alignment issue causing crash when specifying a memory amount to test
+  that is more than the minimum 1 page of memory, but less than 2 full pages.
+  Thanks: Erwan Szymanski.  Also reported by Chenghan Lee and K R Pallavi.
+  -add `-u` option to allow uncached memory semantics on some systems when
+  using the -p option.  Thanks: Florian Fainelli.
+  -fix manpage highlighting of args.  Thanks: László Böszörményi.
+  -add missing option documentation to man page.
+
 Version 4.6.0
 19 December 2022
   -fix warning on signedness of the ONE constant.  Thanks: Marek Vasut.
@@ -25,11 +40,11 @@ Version 4.5.0
 Version 4.3.0
 9 June 2012
   -add ability to mmap a device other than /dev/mem, enabling easier testing
-  of memory for hardware engineers et al if their system's kernel exports the 
+  of memory for hardware engineers et al if their system's kernel exports the
   memory they're interested in via /dev/mydevice or similar.  Thanks:
   Jean-Noël Avila.
   -add ability to run only specified tests by setting the environment
-  variable MEMTESTER_TEST_MASK to a bitmask of the indexes of the tests to be 
+  variable MEMTESTER_TEST_MASK to a bitmask of the indexes of the tests to be
   run.  Thanks: Ian Alexander.
 
 Version 4.2.2
@@ -40,16 +55,16 @@ Version 4.2.2
 
 Version 4.2.1
 3 October 2010
-  -fix offsets/addresses were not being reported correctly in test failure 
+  -fix offsets/addresses were not being reported correctly in test failure
   messages.  Thanks: Anton Sergeev.
 
 Version 4.2.0
 30 July 2010
-  -define _FILE_OFFSET_BITS to 64 by default in conf-cc, which causes some 
+  -define _FILE_OFFSET_BITS to 64 by default in conf-cc, which causes some
   32-bit systems with larger-than-32-bit address spaces to have a 64-bit off_t,
   allowing testing of larger chunks of memory.  Thanks to Steven A. Falco for
   the suggestion.  Let me know if this definition causes problems for anyone.
-  -add tests of 8-bit-wide and 16-bit-wide random writes, to enable verifying 
+  -add tests of 8-bit-wide and 16-bit-wide random writes, to enable verifying
   the correct operation of hardware.  Thanks: Dick Hollenbeck.  If these tests
   trigger unaligned access problems on your platform, you can eliminate these
   tests by removing the -DTEST_NARROW_WRITES definition from the conf-cc file.
